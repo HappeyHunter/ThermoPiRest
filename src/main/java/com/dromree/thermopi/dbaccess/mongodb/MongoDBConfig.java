@@ -14,9 +14,9 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.dromree.thermopi.dbaccess.mongodb.repositories")
 public class MongoDBConfig extends AbstractMongoConfiguration {
 
-    @Value("${mongo.server}")
+    @Value("${mongo.server:localhost}")
     private String server;
-    @Value("${mongo.db.name}")
+    @Value("${mongo.db.name:ThermoPi}")
     private String dbName;
 
     @Override

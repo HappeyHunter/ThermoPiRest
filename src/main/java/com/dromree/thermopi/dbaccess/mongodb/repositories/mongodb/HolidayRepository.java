@@ -13,4 +13,6 @@ public interface HolidayRepository extends MongoRepository<Holiday, String> {
 
     public void deleteHolidayByHolidayID(String holidayID);
 
+    public Long countHolidaysByStartDateLessThanEqualAndEndDateGreaterThanEqual(Long startDate, Long endDate);
+
 }

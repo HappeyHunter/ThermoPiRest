@@ -80,4 +80,8 @@ public class HolidayServices {
     public void deleteHolidayByHolidayId(String holidayID) {
         holidayRepository.deleteHolidayByHolidayID(holidayID);
     }
+
+    public Long getCurrentHolidaysCount() {
+        return holidayRepository.countHolidaysByStartDateLessThanEqualAndEndDateGreaterThanEqual(System.currentTimeMillis(), System.currentTimeMillis());
+    }
 }

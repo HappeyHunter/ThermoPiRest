@@ -72,10 +72,10 @@ public class BoilerSignaler {
 
         canBeEnabled = canActivateHeating();
 
-        updateSignals(canBeEnabled, enableHeating, currentlyEnabled);
+        updateSignals(canBeEnabled, enableHeating);
     }
 
-    private void updateSignals(boolean canBeActive, boolean enableHeating, boolean currentlyEnabled) {
+    private void updateSignals(boolean canBeActive, boolean enableHeating) {
         HeatingStatusData heatingStatusData = new HeatingStatusData();
 
         if (canBeActive) {

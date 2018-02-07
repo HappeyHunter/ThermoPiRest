@@ -2,6 +2,9 @@ package com.dromree.thermopi.rest.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * Network side data object for Temperature Record
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TemperatureRecordData {
 

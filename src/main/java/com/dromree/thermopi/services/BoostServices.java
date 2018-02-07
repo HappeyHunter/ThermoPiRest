@@ -6,6 +6,9 @@ import com.dromree.thermopi.rest.data.BoostData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Services for Boost
+ */
 @Service
 public class BoostServices {
 
@@ -16,6 +19,11 @@ public class BoostServices {
         this.boostRepository = boostRepository;
     }
 
+    /**
+     * Gets the latest boost setting
+     *
+     * @return  The latest boost setting if found, null otherwise
+     */
     public BoostData getLatestBoostSetting() {
         BoostData returnData = null;
 
@@ -29,6 +37,13 @@ public class BoostServices {
         return returnData;
     }
 
+    /**
+     * Sets the boost setting and returns the new value.
+     * Populates the end date if the boost is being enabled
+     *
+     * @param boostData
+     * @return
+     */
     public BoostData setBoostSetting(BoostData boostData) {
         if (boostData.getEnabled()) {
             // Trying to enable boost, add an end time

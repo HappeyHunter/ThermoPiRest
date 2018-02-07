@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Rest Controller for Current Temperature
+ */
 @RestController
 @RequestMapping("/ThermoPi/CurrentTemperature")
 public class CurrentTemperatureController {
@@ -18,6 +21,11 @@ public class CurrentTemperatureController {
     @Autowired
     private TemperatureRecordService temperatureRecordService;
 
+    /**
+     * Updates the current temperature with the provided value
+     *
+     * @param currentData   the new current temperature
+     */
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
@@ -27,6 +35,11 @@ public class CurrentTemperatureController {
         logger.debug("putCurrentTemperature: " + (System.currentTimeMillis()-startTime));
     }
 
+    /**
+     * Gets the current temperature
+     *
+     * @return  the current temperature
+     */
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )

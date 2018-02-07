@@ -1,7 +1,6 @@
 package com.dromree.thermopi.rest.endpoint;
 
 import com.dromree.thermopi.services.HeatingScheduleServices;
-import com.dromree.thermopi.rest.annotation.Secure;
 import com.dromree.thermopi.rest.data.DayScheduleData;
 import com.dromree.thermopi.rest.data.WeekScheduleData;
 import org.slf4j.Logger;
@@ -10,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-@Secure
+/**
+ * Rest Controller for Weekly Schedule
+ */
 @RestController
 @RequestMapping("/ThermoPi/WeeklySchedule")
 public class WeeklyScheduleController {
@@ -20,6 +21,12 @@ public class WeeklyScheduleController {
     @Autowired
     private HeatingScheduleServices heatingScheduleServices;
 
+    /**
+     * Updates the identified month with the provided state
+     *
+     * @param month                 index of the month to be updated
+     * @param weeklyScheduleData    new state of the month
+     */
     @PutMapping(
             value = "/{month}",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -35,6 +42,13 @@ public class WeeklyScheduleController {
 //        return Response.ok().build();
     }
 
+    /**
+     * Updates the identified day with the provided state
+     *
+     * @param month           index of the month to be updated
+     * @param day             name of the day to be updated
+     * @param dayScheduleData new state of the day
+     */
     @PutMapping(
             value = "/{month}/{day}",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -48,6 +62,12 @@ public class WeeklyScheduleController {
 //        return Response.ok().build();
     }
 
+    /**
+     * Gets the month identified
+     *
+     * @param month index of the month to be rretireved
+     * @return      data for the month provided
+     */
     @GetMapping(
             value = "/{month}",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -60,6 +80,13 @@ public class WeeklyScheduleController {
         return weekScheduleData;
     }
 
+    /**
+     * Gets the day identified
+     *
+     * @param month index of the month to be retrieved
+     * @param day   name of the day to be retrieved
+     * @return      data for the day provided
+     */
     @GetMapping(
             value = "{month}/{day}",
             produces = MediaType.APPLICATION_JSON_VALUE

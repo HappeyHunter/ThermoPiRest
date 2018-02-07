@@ -8,6 +8,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
 
+/**
+ * DB Entity for the TemperatureLog
+ */
 @Document(collection = "TemperatureLog")
 @CompoundIndexes({
         @CompoundIndex(name = "year_month_day", def = "{'year' : -1, 'month' : -1, 'day' : -1}")

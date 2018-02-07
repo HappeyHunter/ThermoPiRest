@@ -2,6 +2,9 @@ package com.dromree.thermopi.rest.data;
 
 import java.util.Map;
 
+/**
+ * Network side data object for Week Schedule
+ */
 public class WeekScheduleData {
 
     private Integer month;

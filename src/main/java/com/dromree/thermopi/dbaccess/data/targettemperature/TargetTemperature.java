@@ -3,6 +3,9 @@ package com.dromree.thermopi.dbaccess.data.targettemperature;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * DB Entity for the TargetTemperature
+ */
 @Document(collection = "TargetTemperature")
 public class TargetTemperature {
 

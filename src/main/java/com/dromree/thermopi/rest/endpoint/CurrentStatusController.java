@@ -1,6 +1,5 @@
 package com.dromree.thermopi.rest.endpoint;
 
-import com.dromree.thermopi.rest.annotation.Secure;
 import com.dromree.thermopi.rest.data.*;
 import com.dromree.thermopi.services.BoostServices;
 import com.dromree.thermopi.services.HeatingStatusServices;
@@ -12,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-@Secure
+/**
+ * Rest Controller for Current Status
+ */
 @RestController
 @RequestMapping("/ThermoPi/CurrentStatus")
 public class CurrentStatusController {
@@ -31,6 +32,11 @@ public class CurrentStatusController {
     @Autowired
     private TargetTemperatureService targetTemperatureService;
 
+    /**
+     * Gets the current status of the system.
+     *
+     * @return  Status containing the active status, boost setting, current temperature, and target temperature.
+     */
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )

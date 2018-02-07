@@ -1,5 +1,8 @@
 package com.dromree.thermopi.rest.data;
 
+/**
+ * Network side data object for Heating Status
+ */
 public class HeatingStatusData {
 
     private Boolean enabled;

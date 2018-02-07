@@ -1,5 +1,8 @@
 package com.dromree.thermopi.dbaccess.data.temperaturelog;
 
+/**
+ * DB Entity for the SensorReading of the TemperatureLog
+ */
 public class SensorReading {
 
     private Double temperature;

@@ -10,11 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Services for Authorised Tokens
+ *
+ */
 @Service
 public class AuthorisedTokensServices {
 
     private AuthorisedTokensRepository authorisedTokensRepository;
 
+    /**
+     * Converts a db AuthorisedToken to a network AuthorisedToken
+     *
+     * @param dbData    AuthorisedToken to be converted
+     * @return          network AuthorisedToken
+     */
     private AuthorisedTokenData convertDBToNetworkData(AuthorisedToken dbData) {
         AuthorisedTokenData networkData = null;
         if(dbData != null) {
@@ -24,6 +34,12 @@ public class AuthorisedTokensServices {
         return networkData;
     }
 
+    /**
+     * Converts a list of db AuthorisedTokens to a list of network AuthorisedTokens
+     *
+     * @param dbList    list of AuthorisedTokens to be converted
+     * @return          List of network AuthorisedTokens
+     */
     private List<AuthorisedTokenData> convertDBToNetworkDataList(List<AuthorisedToken> dbList) {
         List<AuthorisedTokenData> networkList = new ArrayList<>();
 
@@ -32,6 +48,12 @@ public class AuthorisedTokensServices {
         return networkList;
     }
 
+    /**
+     * Converts a network AuthorisedToken to a db AuthorisedToken
+     *
+     * @param networkData   Authorised token to be converted
+     * @return              db AuthorisedToken
+     */
     private AuthorisedToken convertNetworkToDBData(AuthorisedTokenData networkData) {
         AuthorisedToken dbData = null;
         if(networkData != null) {
@@ -46,6 +68,11 @@ public class AuthorisedTokensServices {
         this.authorisedTokensRepository = authorisedTokensRepository;
     }
 
+    /**
+     * Gets a list of all Authorised Tokens in the database
+     *
+     * @return  List of all Authorised Tokens
+     */
     public List<AuthorisedTokenData> getAllTokens() {
         List<AuthorisedTokenData> returnData;
 
@@ -60,6 +87,12 @@ public class AuthorisedTokensServices {
         return returnData;
     }
 
+    /**
+     * Retrieves an Authorised Token from the database by the token value
+     *
+     * @param token Token value to search by
+     * @return      returns the token if found, null otherwise
+     */
     public AuthorisedTokenData getAuthorisedTokenByToken(String token) {
         AuthorisedTokenData returnData = null;
 
@@ -72,6 +105,11 @@ public class AuthorisedTokensServices {
         return returnData;
     }
 
+    /**
+     * Adds the token provided to the database
+     *
+     * @param tokenData token to be added to the database
+     */
     public void addTokenForUser(AuthorisedTokenData tokenData) {
         AuthorisedToken authorisedToken = authorisedTokensRepository.findFirstByUser(tokenData.getUser());
 

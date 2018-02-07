@@ -2,6 +2,10 @@ package com.dromree.thermopi.dbaccess.data.heatingschedule;
 
 import java.util.Map;
 
+/**
+ * DB Entity for Day Schedule of the Week Schedule
+ *
+ */
 public class DaySchedule {
 
     private Map<String, HourSchedule> hours;

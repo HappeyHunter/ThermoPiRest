@@ -2,6 +2,10 @@ package com.dromree.thermopi.dbaccess.data.heatingschedule;
 
 import java.util.Map;
 
+/**
+ * DB Entity for Hour Schedule of the Day Schedule
+ *
+ */
 public class HourSchedule {
 
     private Map<String, QuarterSchedule> quarters;

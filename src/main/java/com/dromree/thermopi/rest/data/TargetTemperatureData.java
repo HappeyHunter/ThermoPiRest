@@ -1,5 +1,8 @@
 package com.dromree.thermopi.rest.data;
 
+/**
+ * Network side data object for Target Temperature
+ */
 public class TargetTemperatureData {
 
     private Double temperature;

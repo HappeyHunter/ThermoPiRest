@@ -18,6 +18,9 @@ import java.util.Map;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
+/**
+ * Services for TemperatureRecords
+ */
 @Service
 public class TemperatureRecordService {
 
@@ -31,6 +34,12 @@ public class TemperatureRecordService {
         this.mongoTemplate = mongoTemplate;
     }
 
+    /**
+     * Gets the most recent temperature recorded.
+     * Checks the current day and only checks the previous day if this is the first hour of the current day.
+     *
+     * @return  The current temperature
+     */
     public TemperatureRecordData getCurrentTemperature() {
         TemperatureRecordData temperatureRecordData = null;
         Calendar now = Calendar.getInstance();
@@ -52,6 +61,11 @@ public class TemperatureRecordService {
         return temperatureRecordData;
     }
 
+    /**
+     * Records the current temperature in the database
+     *
+     * @param currentData The current temperature
+     */
     public void recordCurrentTemperature(TemperatureRecordData currentData) {
         Calendar now = Calendar.getInstance();
 
@@ -75,6 +89,12 @@ public class TemperatureRecordService {
 
     }
 
+    /**
+     * Gets the current minute of the current day
+     *
+     * @param readingCalendar   Calendar object to use
+     * @return                  The current minute of the current day
+     */
     private Integer minuteOfDay(Calendar readingCalendar) {
         return readingCalendar.get(Calendar.HOUR_OF_DAY) * 60 + readingCalendar.get(Calendar.MINUTE);
     }

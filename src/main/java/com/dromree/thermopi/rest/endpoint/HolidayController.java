@@ -1,7 +1,6 @@
 package com.dromree.thermopi.rest.endpoint;
 
 import com.dromree.thermopi.services.HolidayServices;
-import com.dromree.thermopi.rest.annotation.Secure;
 import com.dromree.thermopi.rest.data.HolidayData;
 import com.dromree.thermopi.rest.exception.NotFoundException;
 import org.slf4j.Logger;
@@ -13,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@Secure
+/**
+ * Rest Controller for Holidays
+ */
 @RestController
 @RequestMapping("/ThermoPi/Holidays")
 public class HolidayController {
@@ -23,6 +24,12 @@ public class HolidayController {
     @Autowired
     private HolidayServices holidayServices;
 
+    /**
+     * Updates the holiday identified by the id
+     *
+     * @param holidayID     id of the holiday to be updated
+     * @param aHolidayData  new state of the holiday
+     */
     @PutMapping(
             value = "/{holidayID}",
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -36,6 +43,12 @@ public class HolidayController {
         logger.debug("putHoliday: " + (System.currentTimeMillis()-startTime));
     }
 
+    /**
+     * Gets the holiday identified by the provided id
+     *
+     * @param holidayID id of the holiday to be retrieved
+     * @return  The holiday with the provided id if found
+     */
     @GetMapping(
             value = "/{holidayID}",
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -52,6 +65,13 @@ public class HolidayController {
         return holidayData;
     }
 
+    /**
+     * Adds a new holiday using the provided holiday.
+     * Generates a new id and returns the holiday with the id
+     *
+     * @param aHolidayData  new holiday to be added
+     * @return              the holiday added and its generated id
+     */
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -67,6 +87,11 @@ public class HolidayController {
         return aHolidayData;
     }
 
+    /**
+     * Gets a list of all current and future holidays
+     *
+     * @return  List of holidays or empty list if none are found.
+     */
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -77,6 +102,11 @@ public class HolidayController {
         return holidayDataList;
     }
 
+    /**
+     * Delete the holiday identified by the id
+     *
+     * @param holidayID id of the holiday to be deleted
+     */
     @DeleteMapping(
             value = "/{holidayID}"
     )

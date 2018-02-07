@@ -6,6 +6,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
 
+/**
+ * DB Entity for HeatingSchedule
+ *
+ */
 @Document(collection = "HeatingSchedule")
 public class WeekSchedule {
 

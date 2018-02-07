@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Services for TargetTemperature
+ */
 @Service
 public class TargetTemperatureService {
 
@@ -16,6 +19,12 @@ public class TargetTemperatureService {
         this.targetTemperatureRepository = targetTemperatureRepository;
     }
 
+    /**
+     * Converts a db TargetTemperature to a network TargetTemperature
+     *
+     * @param dbData    TargetTemperature to be converted
+     * @return          network TargetTemperature
+     */
     private TargetTemperatureData convertDBToNetworkData(TargetTemperature dbData) {
         TargetTemperatureData networkData = null;
         if(dbData != null) {
@@ -25,6 +34,11 @@ public class TargetTemperatureService {
         return networkData;
     }
 
+    /**
+     * Gets the target temperature from the database
+     *
+     * @return  the target temperature
+     */
     public TargetTemperatureData getTargetTemperature() {
         List<TargetTemperature> targetTemperatureList = targetTemperatureRepository.findAll();
         TargetTemperatureData targetTemperatureData = null;
@@ -36,6 +50,11 @@ public class TargetTemperatureService {
         return targetTemperatureData;
     }
 
+    /**
+     * Updates the target temperature in the database
+     *
+     * @param targetTemperatureData The new target temperature
+     */
     public void setTargetTemperature(TargetTemperatureData targetTemperatureData) {
         List<TargetTemperature> targetTemperatureList = targetTemperatureRepository.findAll();
         TargetTemperature targetTemperature;

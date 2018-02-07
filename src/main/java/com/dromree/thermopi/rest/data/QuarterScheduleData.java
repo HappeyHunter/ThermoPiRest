@@ -1,5 +1,8 @@
 package com.dromree.thermopi.rest.data;
 
+/**
+ * Network side data object for Quarter Schedule
+ */
 public class QuarterScheduleData {
 
     private Boolean enabled;

@@ -1,5 +1,8 @@
 package com.dromree.thermopi.rest.data;
 
+/**
+ * Network side data object for Authorised Tokens
+ */
 public class AuthorisedTokenData {
 
     private String token;

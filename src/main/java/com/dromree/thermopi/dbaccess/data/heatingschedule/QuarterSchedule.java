@@ -1,5 +1,9 @@
 package com.dromree.thermopi.dbaccess.data.heatingschedule;
 
+/**
+ * DB Entity for Quarter Schedule of the Hour Schedule
+ *
+ */
 public class QuarterSchedule {
 
     private Boolean enabled;

@@ -15,6 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Filters out requests that do not provided a valid token
+ *
+ */
 @Component
 public class AuthorisedFilter extends GenericFilterBean {
 
@@ -58,6 +62,12 @@ public class AuthorisedFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
+    /**
+     * Checks if the token provided in the header is an Authorised Token
+     *
+     * @param authHeader    The value of the Authorization header
+     * @return              true if the token is authorised
+     */
     private boolean isValidToken(String authHeader) {
         String[] splitAuth = authHeader.split(" ");
         AuthorisedTokenData token = null;
@@ -69,10 +79,22 @@ public class AuthorisedFilter extends GenericFilterBean {
         return token != null && token.getToken().equals(splitAuth[1]);
     }
 
+    /**
+     * Checks if the type of authorisation is of the expected type
+     *
+     * @param authHeader    The value of the Authorization header
+     * @return              true if the authorisation is of the expected type
+     */
     private boolean isValidAuthentication(String authHeader) {
         return authHeader != null && authHeader.toUpperCase().startsWith(AUTHENTICATION_SCHEME) && authHeader.length() > AUTHENTICATION_SCHEME.length();
     }
 
+    /**
+     * Sets the authentication header details and sends the error for an Unauthorized request
+     *
+     * @param httpResponse
+     * @throws IOException
+     */
     private void abortUnauthorised(HttpServletResponse httpResponse) throws IOException {
         httpResponse.setHeader(HttpHeaders.WWW_AUTHENTICATE, WWW_AUTHENTICATION_HEADER);
         httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, UNAUTHORISED_MESSAGE);

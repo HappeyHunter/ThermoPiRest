@@ -1,7 +1,6 @@
 package com.dromree.thermopi.rest.endpoint;
 
 import com.dromree.thermopi.services.BoostServices;
-import com.dromree.thermopi.rest.annotation.Secure;
 import com.dromree.thermopi.rest.data.BoostData;
 import com.dromree.thermopi.rest.exception.NotFoundException;
 import org.slf4j.Logger;
@@ -10,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Rest Controller for Boost
+ */
 @RestController
 @RequestMapping("ThermoPi/Boost")
 public class BoostController {
@@ -19,7 +21,12 @@ public class BoostController {
     @Autowired
     private BoostServices boostServices;
 
-    @Secure
+    /**
+     * Updates the boost setting with the enabled state of the provided data and returns the new value.
+     *
+     * @param boostData A boost object with a valid enabled state
+     * @return          The new boost setting with the end date populated if enabled
+     */
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -32,7 +39,11 @@ public class BoostController {
         return boostData;
     }
 
-    @Secure
+    /**
+     * Gets the latest boost setting
+     *
+     * @return
+     */
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )

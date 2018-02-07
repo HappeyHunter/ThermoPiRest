@@ -1,5 +1,8 @@
 package com.dromree.thermopi.rest.data;
 
+/**
+ * Network side data object for Current Status
+ */
 public class CurrentStatusData {
 
     private Double currentTemperature;

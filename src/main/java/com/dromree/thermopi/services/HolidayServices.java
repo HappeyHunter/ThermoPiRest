@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Services for Holidays
+ */
 @Service
 public class HolidayServices {
 
@@ -30,6 +33,12 @@ public class HolidayServices {
         return networkData;
     }
 
+    /**
+     * Converts a list of db holidays to a list of network holidays
+     *
+     * @param dbList    List of holidays to be converted
+     * @return          List of network holidays
+     */
     private List<HolidayData> convertDBToNetworkDataList(List<Holiday> dbList) {
         List<HolidayData> networkList = new ArrayList<>();
 
@@ -38,12 +47,23 @@ public class HolidayServices {
         return networkList;
     }
 
+    /**
+     * Gets the holiday identified by the holiday id
+     *
+     * @param holidayID id of the holiday to be retrieved
+     * @return          holiday identified by the provided if, null if it is not found
+     */
     public HolidayData getHolidayByHolidayId(String holidayID) {
         Holiday holiday = holidayRepository.findByHolidayID(holidayID);
 
         return convertDBToNetworkData(holiday);
     }
 
+    /**
+     * Updates the holiday provided
+     *
+     * @param aHolidayData  holiday to update
+     */
     public void updateHoliday(HolidayData aHolidayData) {
         Holiday holiday = holidayRepository.findByHolidayID(aHolidayData.getHolidayID());
 
@@ -57,12 +77,22 @@ public class HolidayServices {
         holidayRepository.save(holiday);
     }
 
+    /**
+     * Adds the provided holiday to the database
+     *
+     * @param aHolidayData  holiday to be added
+     */
     public void addHoliday(HolidayData aHolidayData) {
         Holiday holiday = new Holiday(aHolidayData.getHolidayID(), aHolidayData.getStartDate(), aHolidayData.getEndDate());
 
         holidayRepository.save(holiday);
     }
 
+    /**
+     * Gets a list of all current and future holidays
+     *
+     * @return list of current and future holidays
+     */
     public List<HolidayData> getCurrentAndFutureHolidays() {
         List<HolidayData> returnData;
 
@@ -77,10 +107,20 @@ public class HolidayServices {
         return returnData;
     }
 
+    /**
+     * Deleted the holiday identified by the provided id from the database
+     *
+     * @param holidayID id of the holiday to be deleted
+     */
     public void deleteHolidayByHolidayId(String holidayID) {
         holidayRepository.deleteHolidayByHolidayID(holidayID);
     }
 
+    /**
+     * Gets a count of the currently active holidays
+     *
+     * @return
+     */
     public Long getCurrentHolidaysCount() {
         return holidayRepository.countHolidaysByStartDateLessThanEqualAndEndDateGreaterThanEqual(System.currentTimeMillis(), System.currentTimeMillis());
     }

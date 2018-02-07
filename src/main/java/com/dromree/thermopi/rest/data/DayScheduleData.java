@@ -2,6 +2,9 @@ package com.dromree.thermopi.rest.data;
 
 import java.util.Map;
 
+/**
+ * Network side data object for Day Schedule
+ */
 public class DayScheduleData {
 
     private Map<String, HourScheduleData> hours;

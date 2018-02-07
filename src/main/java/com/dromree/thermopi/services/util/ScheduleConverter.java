@@ -13,11 +13,20 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Converts schedule data between network and db objects
+ */
 @Service
 public class ScheduleConverter {
 
     // Begin Network to DB Conversions
 
+    /**
+     * Converts a network quarter to a db quarter
+     *
+     * @param networkData   network quarter to be converted
+     * @return              db quarter
+     */
     private QuarterSchedule convertQuarterNetworkToDBData(QuarterScheduleData networkData) {
         QuarterSchedule quarterSchedule = null;
 
@@ -28,6 +37,12 @@ public class ScheduleConverter {
         return quarterSchedule;
     }
 
+    /**
+     * Converts a map of network quarters to db quarters
+     *
+     * @param networkDataMap    map of network quarters to be converted
+     * @return                  map of db quarters
+     */
     private Map<String, QuarterSchedule> convertQuarterNetworkToDBDataMap(Map<String, QuarterScheduleData> networkDataMap) {
         Map<String, QuarterSchedule> quarterScheduleMap = new HashMap<>();
 
@@ -36,7 +51,13 @@ public class ScheduleConverter {
         return quarterScheduleMap;
     }
 
-    private HourSchedule convertHourNetworkToDBData(HourScheduleData networkData) {
+    /**
+     * Converts a network hour to a db hour
+     *
+     * @param networkData   network hour to be converted
+     * @return              db hour
+     */
+    private HourSchedule convertHourDBToNetworkData(HourScheduleData networkData) {
         HourSchedule hourSchedule = null;
 
         if(networkData != null) {
@@ -46,14 +67,26 @@ public class ScheduleConverter {
         return hourSchedule;
     }
 
+    /**
+     * Converts a map of network hours to db hours
+     *
+     * @param networkDataMap    map of network hours
+     * @return                  map of db hours
+     */
     private Map<String, HourSchedule> convertHourNetworkToDBDataMap(Map<String, HourScheduleData> networkDataMap) {
         Map<String, HourSchedule> hourScheduleMap = new HashMap<>();
 
-        networkDataMap.forEach( (key, value) -> hourScheduleMap.put(key, convertHourNetworkToDBData(value)));
+        networkDataMap.forEach( (key, value) -> hourScheduleMap.put(key, convertHourDBToNetworkData(value)));
 
         return hourScheduleMap;
     }
 
+    /**
+     * Converts a network day into a db day
+     *
+     * @param networkData   network day to be converted
+     * @return              db day
+     */
     public DaySchedule convertDayNetworkToDBData(DayScheduleData networkData) {
         DaySchedule daySchedule = null;
 
@@ -64,6 +97,12 @@ public class ScheduleConverter {
         return daySchedule;
     }
 
+    /**
+     * Converts a map of network days into a map of db days
+     *
+     * @param networkDataMap    map of network days
+     * @return                  map of db days
+     */
     public Map<String, DaySchedule> convertDayNetworkToDBDataMap(Map<String, DayScheduleData> networkDataMap) {
         Map<String, DaySchedule> dayScheduleMap = new HashMap<>();
 
@@ -72,6 +111,12 @@ public class ScheduleConverter {
         return dayScheduleMap;
     }
 
+    /**
+     * Converts a network week into a db week
+     *
+     * @param networkData   network week to be converted
+     * @return              db week
+     */
     public WeekSchedule convertWeekNetworkToDBData(WeekScheduleData networkData) {
         WeekSchedule weekSchedule = null;
 
@@ -86,6 +131,12 @@ public class ScheduleConverter {
 
     // Begin DB to Network Conversions
 
+    /**
+     * Converts a db quarter to a network quarter
+     *
+     * @param dbData    db quarter to be converted
+     * @return          network quarter
+     */
     private QuarterScheduleData convertQuarterDBToNetwork(QuarterSchedule dbData) {
         QuarterScheduleData quarterScheduleData = null;
 
@@ -96,6 +147,12 @@ public class ScheduleConverter {
         return quarterScheduleData;
     }
 
+    /**
+     * Converts a map of db quarters to a map of network quarters
+     *
+     * @param dbDataMap map of db quarters to be converted
+     * @return          map of network quarters
+     */
     private Map<String, QuarterScheduleData> convertQuarterDBToNetworkDataMap(Map<String, QuarterSchedule> dbDataMap) {
         Map<String, QuarterScheduleData> quarterScheduleDataMap = new HashMap<>();
 
@@ -104,7 +161,13 @@ public class ScheduleConverter {
         return quarterScheduleDataMap;
     }
 
-    private HourScheduleData convertHourNetworkToDBData(HourSchedule dbData) {
+    /**
+     * Converts a db hour to a network hour
+     *
+     * @param dbData    db hour to be converted
+     * @return          network hour
+     */
+    private HourScheduleData convertHourDBToNetworkData(HourSchedule dbData) {
         HourScheduleData hourScheduleData = null;
 
         if(dbData != null) {
@@ -114,14 +177,26 @@ public class ScheduleConverter {
         return hourScheduleData;
     }
 
+    /**
+     * Converts a map of db hours to a map of network hours
+     *
+     * @param dbDataMap map of db hours to be converted
+     * @return          map of network hours
+     */
     private Map<String, HourScheduleData> convertHourDBToNetworkDataMap(Map<String, HourSchedule> dbDataMap) {
         Map<String, HourScheduleData> hourScheduleDataMap = new HashMap<>();
 
-        dbDataMap.forEach( (key, value) -> hourScheduleDataMap.put(key, convertHourNetworkToDBData(value)));
+        dbDataMap.forEach( (key, value) -> hourScheduleDataMap.put(key, convertHourDBToNetworkData(value)));
 
         return hourScheduleDataMap;
     }
 
+    /**
+     * Converts a db day to a network day
+     *
+     * @param dbData    db day to be converted
+     * @return          network day
+     */
     public DayScheduleData convertDayDBToNetworkData(DaySchedule dbData) {
         DayScheduleData dayScheduleData = null;
 
@@ -132,6 +207,12 @@ public class ScheduleConverter {
         return dayScheduleData;
     }
 
+    /**
+     * Converts a map of db days to a map of network days
+     *
+     * @param dbDataMap map of db days to be converted
+     * @return          map of network days
+     */
     private Map<String, DayScheduleData> convertDayDBToNetworkDataMap(Map<String, DaySchedule> dbDataMap) {
         Map<String, DayScheduleData> dayScheduleDataMap = new HashMap<>();
 
@@ -140,6 +221,12 @@ public class ScheduleConverter {
         return dayScheduleDataMap;
     }
 
+    /**
+     * Converts a db week to a network week
+     *
+     * @param dbData    db week to be converted
+     * @return          network week
+     */
     public WeekScheduleData convertWeekDBToNetworkData(WeekSchedule dbData) {
         WeekScheduleData weekScheduleData = null;
 

@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 
+/**
+ * Manages control of the boiler.
+ * Periodically checks the status from the database to see if heating should be enabled or disabled
+ *
+ */
 @Component
 public class BoilerSignaler {
 
@@ -49,7 +54,12 @@ public class BoilerSignaler {
         this.gpio = gpio;
     }
 
-    @Scheduled(fixedRateString = "${boiler.updateinterval:300000}")
+
+    /**
+     * Checks if the heating should be enabled or disabled based on the state of the database
+     *
+     */
+    @Scheduled(fixedRateString = "${boiler.updateinterval:120000}")
     public void updateActiveStatus() {
         logger.debug("Updating active status");
 
@@ -70,11 +80,17 @@ public class BoilerSignaler {
                     currentTemperature.getTemperature() < targetTemperatureData.getTemperature() : currentTemperature.getTemperature() < (targetTemperatureData.getTemperature() - 2);
         }
 
-        canBeEnabled = canActivateHeating();
+        canBeEnabled = enableHeating && canActivateHeating();
 
         updateSignals(canBeEnabled, enableHeating);
     }
 
+    /**
+     * Updates the GPIO signals and adds the new status to the database
+     *
+     * @param canBeActive   if the heating can be active i.e. scheduled or boosted. Controls the valve.
+     * @param enableHeating if the heating will be activated if allowed. Controls the boiler.
+     */
     private void updateSignals(boolean canBeActive, boolean enableHeating) {
         HeatingStatusData heatingStatusData = new HeatingStatusData();
 
@@ -96,7 +112,6 @@ public class BoilerSignaler {
             gpio.setValveState(false);
 
             // set valve to low
-            logger.debug("Heating not scheduled. Valve disabled");
             logger.debug("Disable heating");
             heatingStatusData.setEnabled(false);
         }
@@ -107,6 +122,11 @@ public class BoilerSignaler {
         heatingStatusServices.setHeatingStatus(heatingStatusData);
     }
 
+    /**
+     * Returns true if the heating is either scheduled or boosted
+     *
+     * @return true if the heating is scheduled or boosted
+     */
     private boolean canActivateHeating() {
         boolean canBeActive = false;
 
@@ -136,6 +156,12 @@ public class BoilerSignaler {
         return canBeActive;
     }
 
+    /**
+     * Returns true if the heating is scheduled
+     *
+     * @param dayScheduleData   schedule data for the current day
+     * @return                  true if the heating is scheduled for the current time in the day provided
+     */
     private boolean isScheduled(DayScheduleData dayScheduleData) {
         Calendar cal = Calendar.getInstance();
         String hour = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
@@ -143,6 +169,12 @@ public class BoilerSignaler {
         return dayScheduleData.getHours().get(hour).getQuarters().get(getCurrentQuarter(cal.get(Calendar.MINUTE))).getEnabled();
     }
 
+    /**
+     * Gets the name of the quarter the minute belongs to
+     *
+     * @param minute    the current minute of the hour
+     * @return          the quarter the minute falls into
+     */
     private String getCurrentQuarter(int minute) {
         return String.valueOf(minute / 15);
     }

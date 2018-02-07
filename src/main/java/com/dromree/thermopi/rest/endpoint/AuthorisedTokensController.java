@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Rest Controller for Authorised Tokens
+ */
 @RestController
 @RequestMapping("ThermoPi/Secure/AuthorizedTokens")
 public class AuthorisedTokensController {
@@ -20,9 +23,13 @@ public class AuthorisedTokensController {
     @Autowired
     private AuthorisedTokensServices authorisedTokensServices;
 
-    @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
+    /**
+     * Adds the new Authorised Token
+     *
+     * @param tokenData The token to add
+     */
+    @PutMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public void addAuthorisedToken(@RequestBody AuthorisedTokenData tokenData) {
         long startTime = System.currentTimeMillis();
@@ -30,6 +37,11 @@ public class AuthorisedTokensController {
         logger.debug("addAuthorisedToken: " + (System.currentTimeMillis()-startTime));
     }
 
+    /**
+     * Gets a list of the Authorised Tokens
+     *
+     * @return  List of  all Authorised Tokens. Empty list if none are found.
+     */
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )

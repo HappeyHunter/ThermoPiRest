@@ -4,7 +4,9 @@ import com.dromree.thermopi.dbaccess.data.Days;
 import com.dromree.thermopi.rest.data.*;
 import com.dromree.thermopi.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,28 +16,32 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/ThermoPi/DataInitialiser")
-public class DataInitialiser {
+public class DataInitialiser extends BaseController {
+
+    private final HeatingStatusServices heatingStatusServices;
+
+    private final BoostServices boostServices;
+
+    private final TemperatureRecordService temperatureRecordService;
+
+    private final TargetTemperatureService targetTemperatureService;
+
+    private final HeatingScheduleServices heatingScheduleServices;
 
     @Autowired
-    private HeatingStatusServices heatingStatusServices;
-
-    @Autowired
-    private BoostServices boostServices;
-
-    @Autowired
-    private TemperatureRecordService temperatureRecordService;
-
-    @Autowired
-    private TargetTemperatureService targetTemperatureService;
-
-    @Autowired
-    private HeatingScheduleServices heatingScheduleServices;
+    public DataInitialiser(HeatingStatusServices heatingStatusServices, BoostServices boostServices, TemperatureRecordService temperatureRecordService, TargetTemperatureService targetTemperatureService, HeatingScheduleServices heatingScheduleServices) {
+        this.heatingStatusServices = heatingStatusServices;
+        this.boostServices = boostServices;
+        this.temperatureRecordService = temperatureRecordService;
+        this.targetTemperatureService = targetTemperatureService;
+        this.heatingScheduleServices = heatingScheduleServices;
+    }
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Boolean initialiseDBData(String initData) {
+    public ResponseEntity<?> initialiseDBData(String initData) {
 
         try {
             // Setup the boost setting to disabled
@@ -48,12 +54,12 @@ public class DataInitialiser {
             initSchedule();
             initHeatingStatus();
         } catch(Throwable t) {
-            return Boolean.FALSE;
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         // If all goes well return true
 
-        return Boolean.TRUE;
+        return ok(Boolean.TRUE);
     }
 
     private void initHeatingStatus() {

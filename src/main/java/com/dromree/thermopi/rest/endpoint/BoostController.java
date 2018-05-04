@@ -1,12 +1,13 @@
 package com.dromree.thermopi.rest.endpoint;
 
-import com.dromree.thermopi.services.BoostServices;
 import com.dromree.thermopi.rest.data.BoostData;
-import com.dromree.thermopi.rest.exception.NotFoundException;
+import com.dromree.thermopi.services.BoostServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -14,12 +15,16 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("ThermoPi/Boost")
-public class BoostController {
+public class BoostController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(BoostController.class.getName());
 
+    private final BoostServices boostServices;
+
     @Autowired
-    private BoostServices boostServices;
+    public BoostController(BoostServices boostServices) {
+        this.boostServices = boostServices;
+    }
 
     /**
      * Updates the boost setting with the enabled state of the provided data and returns the new value.
@@ -31,31 +36,31 @@ public class BoostController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public BoostData setBoostSetting(@RequestBody BoostData boostData) {
+    public ResponseEntity<?> setBoostSetting(@RequestBody BoostData boostData) {
         long startTime = System.currentTimeMillis();
         boostData = boostServices.setBoostSetting(boostData);
         logger.debug("setBoostSetting: " + (System.currentTimeMillis()-startTime));
 
-        return boostData;
+        return ok(boostData);
     }
 
     /**
      * Gets the latest boost setting
      *
-     * @return
+     * @return  The latest boost setting
      */
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public BoostData getBoostSetting() {
+    public ResponseEntity<?> getBoostSetting() {
         long startTime = System.currentTimeMillis();
         BoostData returnData = boostServices.getLatestBoostSetting();
 
         if(returnData == null) {
-            throw new NotFoundException();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         logger.debug("getBoostSetting: " + (System.currentTimeMillis()-startTime));
 
-        return returnData;
+        return ok(returnData);
     }
 }

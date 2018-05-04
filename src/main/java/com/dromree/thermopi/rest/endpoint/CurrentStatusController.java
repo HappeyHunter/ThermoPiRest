@@ -8,7 +8,9 @@ import com.dromree.thermopi.services.TemperatureRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -16,21 +18,25 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/ThermoPi/CurrentStatus")
-public class CurrentStatusController {
+public class CurrentStatusController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(CurrentStatusController.class.getName());
 
-    @Autowired
-    private HeatingStatusServices heatingStatusServices;
+    private final HeatingStatusServices heatingStatusServices;
+
+    private final BoostServices boostServices;
+
+    private final TemperatureRecordService temperatureRecordService;
+
+    private final TargetTemperatureService targetTemperatureService;
 
     @Autowired
-    private BoostServices boostServices;
-
-    @Autowired
-    private TemperatureRecordService temperatureRecordService;
-
-    @Autowired
-    private TargetTemperatureService targetTemperatureService;
+    public CurrentStatusController(HeatingStatusServices heatingStatusServices, BoostServices boostServices, TemperatureRecordService temperatureRecordService, TargetTemperatureService targetTemperatureService) {
+        this.heatingStatusServices = heatingStatusServices;
+        this.boostServices = boostServices;
+        this.temperatureRecordService = temperatureRecordService;
+        this.targetTemperatureService = targetTemperatureService;
+    }
 
     /**
      * Gets the current status of the system.
@@ -40,7 +46,7 @@ public class CurrentStatusController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public CurrentStatusData getStatus() {
+    public ResponseEntity<?> getStatus() {
         long startTime = System.currentTimeMillis();
         CurrentStatusData currentStatus = new CurrentStatusData();
 
@@ -50,9 +56,13 @@ public class CurrentStatusController {
         TemperatureRecordData temperatureRecordData = temperatureRecordService.getCurrentTemperature();
         TargetTemperatureData targetTemperatureData = targetTemperatureService.getTargetTemperature();
 
+        if(boostData == null || temperatureRecordData == null || targetTemperatureData == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
         currentStatus.setHeatingEnabled(heatingStatusData.getEnabled());
 
-        if(boostData != null && boostData.getEnabled() && boostData.getEndDate() > System.currentTimeMillis()) {
+        if(boostData.getEnabled() && boostData.getEndDate() > System.currentTimeMillis()) {
             currentStatus.setBoostEnabled(Boolean.TRUE);
         } else {
             currentStatus.setBoostEnabled(Boolean.FALSE);
@@ -62,6 +72,6 @@ public class CurrentStatusController {
         currentStatus.setTargetTemperature(targetTemperatureData.getTemperature());
         logger.debug("getStatus: " + (System.currentTimeMillis()-startTime));
 
-        return currentStatus;
+        return ok(currentStatus);
     }
 }

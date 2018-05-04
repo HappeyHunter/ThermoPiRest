@@ -1,12 +1,13 @@
 package com.dromree.thermopi.rest.endpoint;
 
-import com.dromree.thermopi.services.HolidayServices;
 import com.dromree.thermopi.rest.data.HolidayData;
-import com.dromree.thermopi.rest.exception.NotFoundException;
+import com.dromree.thermopi.services.HolidayServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +18,16 @@ import java.util.UUID;
  */
 @RestController
 @RequestMapping("/ThermoPi/Holidays")
-public class HolidayController {
+public class HolidayController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(HolidayController.class.getName());
 
+    private final HolidayServices holidayServices;
+
     @Autowired
-    private HolidayServices holidayServices;
+    public HolidayController(HolidayServices holidayServices) {
+        this.holidayServices = holidayServices;
+    }
 
     /**
      * Updates the holiday identified by the id
@@ -34,13 +39,15 @@ public class HolidayController {
             value = "/{holidayID}",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public void putHoliday(@PathVariable("holidayID") String holidayID, @RequestBody HolidayData aHolidayData) {
+    public ResponseEntity<?> putHoliday(@PathVariable("holidayID") String holidayID, @RequestBody HolidayData aHolidayData) {
         long startTime = System.currentTimeMillis();
         // Set the Id from the path
         aHolidayData.setHolidayID(holidayID);
 
         holidayServices.updateHoliday(aHolidayData);
         logger.debug("putHoliday: " + (System.currentTimeMillis()-startTime));
+
+        return ok();
     }
 
     /**
@@ -53,16 +60,16 @@ public class HolidayController {
             value = "/{holidayID}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public HolidayData getHoliday(@PathVariable("holidayID") String holidayID) {
+    public ResponseEntity<?> getHoliday(@PathVariable("holidayID") String holidayID) {
         long startTime = System.currentTimeMillis();
         HolidayData holidayData = holidayServices.getHolidayByHolidayId(holidayID);
 
         if(holidayData == null) {
-            throw new NotFoundException();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         logger.debug("getHoliday: " + (System.currentTimeMillis()-startTime));
 
-        return holidayData;
+        return ok(holidayData);
     }
 
     /**
@@ -76,7 +83,7 @@ public class HolidayController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public HolidayData addHoliday(@RequestBody HolidayData aHolidayData) {
+    public ResponseEntity<?> addHoliday(@RequestBody HolidayData aHolidayData) {
         long startTime = System.currentTimeMillis();
         String holidayID = UUID.randomUUID().toString();
         aHolidayData.setHolidayID(holidayID);
@@ -84,7 +91,7 @@ public class HolidayController {
         holidayServices.addHoliday(aHolidayData);
         logger.debug("addHoliday: " + (System.currentTimeMillis()-startTime));
 
-        return aHolidayData;
+        return ok(aHolidayData);
     }
 
     /**
@@ -95,11 +102,11 @@ public class HolidayController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<HolidayData> getHolidays() {
+    public ResponseEntity<?> getHolidays() {
         long startTime = System.currentTimeMillis();
         List<HolidayData> holidayDataList = holidayServices.getCurrentAndFutureHolidays();
         logger.debug("getHolidays: " + (System.currentTimeMillis()-startTime));
-        return holidayDataList;
+        return ok(holidayDataList);
     }
 
     /**
@@ -110,11 +117,11 @@ public class HolidayController {
     @DeleteMapping(
             value = "/{holidayID}"
     )
-    public void deleteHoliday(@PathVariable("holidayID") String holidayID) {
+    public ResponseEntity<?> deleteHoliday(@PathVariable("holidayID") String holidayID) {
         long startTime = System.currentTimeMillis();
         holidayServices.deleteHolidayByHolidayId(holidayID);
         logger.debug("deleteHoliday: " + (System.currentTimeMillis()-startTime));
 
-//        return Response.ok().build();
+        return ok();
     }
 }

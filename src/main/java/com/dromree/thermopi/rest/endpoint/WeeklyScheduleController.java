@@ -1,12 +1,13 @@
 package com.dromree.thermopi.rest.endpoint;
 
-import com.dromree.thermopi.services.HeatingScheduleServices;
 import com.dromree.thermopi.rest.data.DayScheduleData;
 import com.dromree.thermopi.rest.data.WeekScheduleData;
+import com.dromree.thermopi.services.HeatingScheduleServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -14,12 +15,16 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/ThermoPi/WeeklySchedule")
-public class WeeklyScheduleController {
+public class WeeklyScheduleController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(WeeklyScheduleController.class.getName());
 
+    private final HeatingScheduleServices heatingScheduleServices;
+
     @Autowired
-    private HeatingScheduleServices heatingScheduleServices;
+    public WeeklyScheduleController(HeatingScheduleServices heatingScheduleServices) {
+        this.heatingScheduleServices = heatingScheduleServices;
+    }
 
     /**
      * Updates the identified month with the provided state
@@ -31,7 +36,7 @@ public class WeeklyScheduleController {
             value = "/{month}",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public void putWeeklySchedule(@PathVariable("month") Integer month, @RequestBody WeekScheduleData weeklyScheduleData) {
+    public ResponseEntity<?> putWeeklySchedule(@PathVariable("month") Integer month, @RequestBody WeekScheduleData weeklyScheduleData) {
         long startTime = System.currentTimeMillis();
 
         weeklyScheduleData.setMonth(month);
@@ -39,7 +44,7 @@ public class WeeklyScheduleController {
         heatingScheduleServices.updateHeatingScheduleByWeek(weeklyScheduleData);
         logger.debug("putWeeklySchedule: " + (System.currentTimeMillis()-startTime));
 
-//        return Response.ok().build();
+        return ok();
     }
 
     /**
@@ -53,13 +58,13 @@ public class WeeklyScheduleController {
             value = "/{month}/{day}",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public void putDailySchedule(@PathVariable("month") Integer month, @PathVariable("day") String day, @RequestBody DayScheduleData dayScheduleData) {
+    public ResponseEntity<?> putDailySchedule(@PathVariable("month") Integer month, @PathVariable("day") String day, @RequestBody DayScheduleData dayScheduleData) {
         long startTime = System.currentTimeMillis();
 
         heatingScheduleServices.updateHeatingScheduleByDay(month, day, dayScheduleData);
         logger.debug("putDailySchedule: " + (System.currentTimeMillis()-startTime));
 
-//        return Response.ok().build();
+        return ok();
     }
 
     /**
@@ -72,12 +77,12 @@ public class WeeklyScheduleController {
             value = "/{month}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public WeekScheduleData getWeeklySchedule(@PathVariable("month") Integer month) {
+    public ResponseEntity<?> getWeeklySchedule(@PathVariable("month") Integer month) {
         long startTime = System.currentTimeMillis();
         WeekScheduleData weekScheduleData = heatingScheduleServices.getScheduleByMonth(month);
         logger.debug("getWeeklySchedule: " + (System.currentTimeMillis()-startTime));
 
-        return weekScheduleData;
+        return ok(weekScheduleData);
     }
 
     /**
@@ -91,12 +96,12 @@ public class WeeklyScheduleController {
             value = "{month}/{day}",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public DayScheduleData getDailySchedule(@PathVariable("month") Integer month, @PathVariable("day") String day) {
+    public ResponseEntity<?> getDailySchedule(@PathVariable("month") Integer month, @PathVariable("day") String day) {
         long startTime = System.currentTimeMillis();
         DayScheduleData dayScheduleData = heatingScheduleServices.getScheduleByDay(month, day);
         logger.debug("getDailySchedule: " + (System.currentTimeMillis()-startTime));
 
-        return dayScheduleData;
+        return ok(dayScheduleData);
     }
 
 }

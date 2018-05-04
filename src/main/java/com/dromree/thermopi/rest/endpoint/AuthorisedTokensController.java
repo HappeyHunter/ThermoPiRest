@@ -5,8 +5,8 @@ import com.dromree.thermopi.services.AuthorisedTokensServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,12 +16,16 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("ThermoPi/Secure/AuthorizedTokens")
-public class AuthorisedTokensController {
+public class AuthorisedTokensController extends BaseController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthorisedTokensController.class.getName());
 
+    private final AuthorisedTokensServices authorisedTokensServices;
+
     @Autowired
-    private AuthorisedTokensServices authorisedTokensServices;
+    public AuthorisedTokensController(AuthorisedTokensServices authorisedTokensServices) {
+        this.authorisedTokensServices = authorisedTokensServices;
+    }
 
     /**
      * Adds the new Authorised Token
@@ -31,10 +35,12 @@ public class AuthorisedTokensController {
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public void addAuthorisedToken(@RequestBody AuthorisedTokenData tokenData) {
+    public ResponseEntity<?> addAuthorisedToken(@RequestBody AuthorisedTokenData tokenData) {
         long startTime = System.currentTimeMillis();
         authorisedTokensServices.addTokenForUser(tokenData);
         logger.debug("addAuthorisedToken: " + (System.currentTimeMillis()-startTime));
+
+        return ok();
     }
 
     /**
@@ -45,10 +51,11 @@ public class AuthorisedTokensController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<AuthorisedTokenData> getAuthorisedTokens() {
+    public ResponseEntity<?> getAuthorisedTokens() {
         long startTime = System.currentTimeMillis();
         List<AuthorisedTokenData> tokens = authorisedTokensServices.getAllTokens();
         logger.debug("getAuthorisedTokens: " + (System.currentTimeMillis()-startTime));
-        return tokens;
+
+        return ok(tokens);
     }
 }

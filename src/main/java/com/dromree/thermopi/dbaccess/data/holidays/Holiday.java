@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 /**
  * DB Entity for the Holidays
  */
@@ -15,13 +17,13 @@ public class Holiday {
 
     @Indexed
     private String holidayID;
-    private Long startDate;
+    private Date startDate;
     @Indexed
-    private Long endDate;
+    private Date endDate;
 
     public Holiday() {}
 
-    public Holiday(String holidayID, Long startDate, Long endDate) {
+    public Holiday(String holidayID, Date startDate, Date endDate) {
         this.holidayID = holidayID;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -35,19 +37,19 @@ public class Holiday {
         this.holidayID = holidayID;
     }
 
-    public Long getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Long startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Long getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Long endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 }

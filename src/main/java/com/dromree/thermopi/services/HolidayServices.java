@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Services for Holidays
@@ -96,7 +96,7 @@ public class HolidayServices {
     public List<HolidayData> getCurrentAndFutureHolidays() {
         List<HolidayData> returnData;
 
-        List<Holiday> holidaysList = holidayRepository.findHolidaysByEndDateGreaterThanOrderByStartDateAsc(System.currentTimeMillis());
+        List<Holiday> holidaysList = holidayRepository.findHolidaysByEndDateGreaterThanOrderByStartDateAsc(new Date());
 
         if(holidaysList.size() > 0) {
             returnData = convertDBToNetworkDataList(holidaysList);
@@ -119,9 +119,9 @@ public class HolidayServices {
     /**
      * Gets a count of the currently active holidays
      *
-     * @return
+     * @return  Count of active holidays
      */
     public Long getCurrentHolidaysCount() {
-        return holidayRepository.countHolidaysByStartDateLessThanEqualAndEndDateGreaterThanEqual(System.currentTimeMillis(), System.currentTimeMillis());
+        return holidayRepository.countHolidaysByStartDateLessThanEqualAndEndDateGreaterThanEqual(new Date(), new Date());
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Manages control of the boiler.
@@ -134,7 +135,7 @@ public class BoilerSignaler {
         BoostData currentBoostSetting = boostServices.getLatestBoostSetting();
 
         if (currentBoostSetting != null
-                && currentBoostSetting.getEnabled() && currentBoostSetting.getEndDate() > System.currentTimeMillis()) {
+                && currentBoostSetting.getEnabled() && new Date().before(currentBoostSetting.getEndDate())) {
             canBeActive = true;
         }
 

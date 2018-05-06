@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 /**
  * DB Entity for Boost
  *
@@ -15,13 +17,13 @@ public class Boost {
     public String id;
 
     private Boolean enabled;
-    private Long endDate;
+    private Date endDate;
     @Indexed
-    private Long timestamp;
+    private Date timestamp;
 
     public Boost() {}
 
-    public Boost(Boolean enabled, Long endDate, Long timestamp) {
+    public Boost(Boolean enabled, Date endDate, Date timestamp) {
         this.enabled = enabled;
         this.endDate = endDate;
         this.timestamp = timestamp;
@@ -35,19 +37,19 @@ public class Boost {
         this.enabled = enabled;
     }
 
-    public Long getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Long endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public Long getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Long timestamp) {
+    public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 }

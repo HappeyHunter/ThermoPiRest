@@ -4,6 +4,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 /**
  * DB Entity for the HeatingStatus
  */
@@ -15,20 +17,20 @@ public class HeatingStatus {
 
     private Boolean active;
     @Indexed
-    private Long statusTime;
+    private Date statusTime;
 
     public HeatingStatus() {}
 
-    public HeatingStatus(Boolean active, Long statusTime) {
+    public HeatingStatus(Boolean active, Date statusTime) {
         this.statusTime = statusTime;
         this.active = active;
     }
 
-    public Long getStatusTime() {
+    public Date getStatusTime() {
         return statusTime;
     }
 
-    public void setStatusTime(Long statusTime) {
+    public void setStatusTime(Date statusTime) {
         this.statusTime = statusTime;
     }
 

@@ -16,4 +16,8 @@ public abstract class BaseController {
     protected ResponseEntity<?> ok(Object responseBody) {
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
+
+    protected ResponseEntity<?> notFound() {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

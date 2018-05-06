@@ -1,6 +1,9 @@
 package com.dromree.thermopi.rest.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.Date;
 
 /**
  * Network side data object for Boost
@@ -9,11 +12,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class BoostData {
 
     private Boolean enabled;
-    private Long endDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss:z")
+    private Date endDate;
 
     public BoostData() {}
 
-    public BoostData(Boolean enabled, Long endDate) {
+    public BoostData(Boolean enabled, Date endDate) {
         this.enabled = enabled;
         this.endDate = endDate;
     }
@@ -26,11 +30,11 @@ public class BoostData {
         this.enabled = enabled;
     }
 
-    public Long getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Long endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 }

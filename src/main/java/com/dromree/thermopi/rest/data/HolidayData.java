@@ -1,17 +1,23 @@
 package com.dromree.thermopi.rest.data;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 /**
  * Network side data object for Holiday
  */
 public class HolidayData {
 
     private String holidayID;
-    private Long startDate;
-    private Long endDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
+    private Date startDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
+    private Date endDate;
 
     public HolidayData() {}
 
-    public HolidayData(String holidayID, Long startDate, Long endDate) {
+    public HolidayData(String holidayID, Date startDate, Date endDate) {
         this.holidayID = holidayID;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -25,19 +31,19 @@ public class HolidayData {
         this.holidayID = iD;
     }
 
-    public Long getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Long startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public Long getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Long endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 }

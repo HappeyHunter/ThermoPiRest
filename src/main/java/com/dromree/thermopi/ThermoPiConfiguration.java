@@ -1,6 +1,9 @@
 package com.dromree.thermopi;
 
 import com.dromree.thermopi.gpio.simulation.SimulatedGpioController;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import org.slf4j.Logger;
@@ -29,6 +32,16 @@ public class ThermoPiConfiguration {
         }
 
         return gpio;
+    }
+
+    @Bean
+    public ObjectMapper getObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        return objectMapper;
     }
 
 }

@@ -1,7 +1,5 @@
 package com.dromree.thermopi.rest.data;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.LocalDate;
 
 /**
@@ -10,9 +8,7 @@ import java.time.LocalDate;
 public class HolidayData {
 
     private String holidayID;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     private LocalDate startDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
     private LocalDate endDate;
 
     public HolidayData() {}

@@ -9,15 +9,15 @@ import org.springframework.http.ResponseEntity;
  */
 public abstract class BaseController {
 
-    protected ResponseEntity<?> ok() {
+    ResponseEntity<?> ok() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    protected ResponseEntity<?> ok(Object responseBody) {
+    ResponseEntity<?> ok(Object responseBody) {
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
-    protected ResponseEntity<?> notFound() {
+    ResponseEntity<?> notFound() {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

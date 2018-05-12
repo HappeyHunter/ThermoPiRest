@@ -2,6 +2,8 @@ package com.dromree.thermopi.rest.endpoint;
 
 import com.dromree.thermopi.rest.data.*;
 import com.dromree.thermopi.services.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +19,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/ThermoPi/DataInitialiser")
 public class DataInitialiser extends BaseController {
+
+    private static final Logger logger = LoggerFactory.getLogger(DataInitialiser.class.getName());
 
     private final HeatingStatusServices heatingStatusServices;
 
@@ -54,6 +58,7 @@ public class DataInitialiser extends BaseController {
             initSchedule();
             initHeatingStatus();
         } catch(Throwable t) {
+            logger.error("Error occurred inistalising database", t);
             return new ResponseEntity<>(Boolean.FALSE, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -110,7 +115,7 @@ public class DataInitialiser extends BaseController {
         WeekScheduleData weekScheduleData = new WeekScheduleData();
         weekScheduleData.setDays(dayScheduleDataMap);
 
-        for(int month = 0; month < 12; month++) {
+        for(int month = 1; month <= 12; month++) {
             weekScheduleData.setMonth(month);
 
             heatingScheduleServices.updateHeatingScheduleByWeek(weekScheduleData);

@@ -11,16 +11,20 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private final AuthorisedFilter authorisedFilter;
+
     @Autowired
-    private AuthorisedFilter authorisedFilter;
+    public SecurityConfiguration(AuthorisedFilter authorisedFilter) {
+        this.authorisedFilter = authorisedFilter;
+    }
 
     /**
      * Configures the security settings.
      * Secure paths can only be accessed from the current network
      * Adds the Authorisation filter to all other requests
      *
-     * @param http
-     * @throws Exception
+     * @param http          HTTP Security object
+     * @throws Exception    Throws if something goes wrong with security setup
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {

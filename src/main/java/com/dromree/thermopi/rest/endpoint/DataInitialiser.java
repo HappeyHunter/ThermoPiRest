@@ -1,6 +1,5 @@
 package com.dromree.thermopi.rest.endpoint;
 
-import com.dromree.thermopi.dbaccess.data.Days;
 import com.dromree.thermopi.rest.data.*;
 import com.dromree.thermopi.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public class DataInitialiser extends BaseController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> initialiseDBData(String initData) {
+    public ResponseEntity<?> initialiseDBData() {
 
         try {
             // Setup the boost setting to disabled
@@ -103,8 +103,8 @@ public class DataInitialiser extends BaseController {
 
         Map<String, DayScheduleData> dayScheduleDataMap = new HashMap<>();
 
-        for(Days day : Days.values()) {
-            dayScheduleDataMap.put(day.toString(), dayScheduleData);
+        for(DayOfWeek day : DayOfWeek.values()) {
+            dayScheduleDataMap.put(day.name(), dayScheduleData);
         }
 
         WeekScheduleData weekScheduleData = new WeekScheduleData();

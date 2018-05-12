@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Rest Controller for Current Status
@@ -65,7 +65,7 @@ public class CurrentStatusController extends BaseController {
 
         currentStatus.setHeatingEnabled(heatingStatusData.getEnabled());
 
-        if(boostData.getEnabled() && new Date().before(boostData.getEndDate())) {
+        if(boostData.getEnabled() && LocalDateTime.now().isBefore(boostData.getEndDate())) {
             currentStatus.setBoostEnabled(Boolean.TRUE);
         } else {
             currentStatus.setBoostEnabled(Boolean.FALSE);

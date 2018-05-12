@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HeatingStatusRepository extends MongoRepository<HeatingStatus, String> {
 
-    public HeatingStatus findTopByOrderByStatusTimeDesc();
+    HeatingStatus findTopByOrderByStatusTimeDesc();
 
 }

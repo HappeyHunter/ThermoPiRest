@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AuthorisedTokensRepository extends MongoRepository<AuthorisedToken, String> {
 
-    public AuthorisedToken findFirstByUser(String user);
+    AuthorisedToken findFirstByUser(String user);
 
-    public AuthorisedToken findFirstByToken(String token);
+    AuthorisedToken findFirstByToken(String token);
 
 }

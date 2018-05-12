@@ -6,8 +6,8 @@ import com.dromree.thermopi.rest.data.HolidayData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -96,7 +96,7 @@ public class HolidayServices {
     public List<HolidayData> getCurrentAndFutureHolidays() {
         List<HolidayData> returnData;
 
-        List<Holiday> holidaysList = holidayRepository.findHolidaysByEndDateGreaterThanOrderByStartDateAsc(new Date());
+        List<Holiday> holidaysList = holidayRepository.findHolidaysByEndDateGreaterThanEqualOrderByStartDateAsc(LocalDate.now());
 
         if(holidaysList.size() > 0) {
             returnData = convertDBToNetworkDataList(holidaysList);
@@ -122,6 +122,6 @@ public class HolidayServices {
      * @return  Count of active holidays
      */
     public Long getCurrentHolidaysCount() {
-        return holidayRepository.countHolidaysByStartDateLessThanEqualAndEndDateGreaterThanEqual(new Date(), new Date());
+        return holidayRepository.countHolidaysByStartDateLessThanEqualAndEndDateGreaterThanEqual(LocalDate.now(), LocalDate.now());
     }
 }

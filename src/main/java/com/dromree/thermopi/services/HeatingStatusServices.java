@@ -6,7 +6,7 @@ import com.dromree.thermopi.rest.data.HeatingStatusData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Services for the HeatingStatus
@@ -44,6 +44,6 @@ public class HeatingStatusServices {
      * @param heatingStatusData HeatingStatus to be added
      */
     public void setHeatingStatus(HeatingStatusData heatingStatusData) {
-        heatingStatusRepository.save(new HeatingStatus(heatingStatusData.getEnabled(), new Date()));
+        heatingStatusRepository.save(new HeatingStatus(heatingStatusData.getEnabled(), LocalDateTime.now()));
     }
 }

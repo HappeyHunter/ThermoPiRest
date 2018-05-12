@@ -4,18 +4,18 @@ import com.dromree.thermopi.dbaccess.data.holidays.Holiday;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface HolidayRepository extends MongoRepository<Holiday, String> {
 
-    public Holiday findByHolidayID(String holidayID);
+    Holiday findByHolidayID(String holidayID);
 
-    public List<Holiday> findHolidaysByEndDateGreaterThanOrderByStartDateAsc(Date date);
+    List<Holiday> findHolidaysByEndDateGreaterThanEqualOrderByStartDateAsc(LocalDate date);
 
-    public void deleteHolidayByHolidayID(String holidayID);
+    void deleteHolidayByHolidayID(String holidayID);
 
-    public Long countHolidaysByStartDateLessThanEqualAndEndDateGreaterThanEqual(Date startDate, Date endDate);
+    Long countHolidaysByStartDateLessThanEqualAndEndDateGreaterThanEqual(LocalDate startDate, LocalDate endDate);
 
 }

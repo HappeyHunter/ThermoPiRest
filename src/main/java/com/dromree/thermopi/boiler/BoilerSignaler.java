@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Manages control of the boiler.
@@ -21,8 +20,6 @@ import java.util.Date;
 public class BoilerSignaler {
 
     private static final Logger logger = LoggerFactory.getLogger(BoilerSignaler.class.getName());
-
-    private String[] dayNames = {"", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     private TargetTemperatureService targetTemperatureService;
 
@@ -135,7 +132,7 @@ public class BoilerSignaler {
         BoostData currentBoostSetting = boostServices.getLatestBoostSetting();
 
         if (currentBoostSetting != null
-                && currentBoostSetting.getEnabled() && new Date().before(currentBoostSetting.getEndDate())) {
+                && currentBoostSetting.getEnabled() && LocalDateTime.now().isBefore(currentBoostSetting.getEndDate())) {
             canBeActive = true;
         }
 
@@ -145,8 +142,8 @@ public class BoilerSignaler {
 
             if (currentHolidaysCount == 0) {
                 // get schedule
-                Calendar cal = Calendar.getInstance();
-                DayScheduleData dayScheduleData = heatingScheduleServices.getScheduleByDay(cal.get(Calendar.MONTH), dayNames[cal.get(Calendar.DAY_OF_WEEK)]);
+                LocalDateTime now = LocalDateTime.now();
+                DayScheduleData dayScheduleData = heatingScheduleServices.getScheduleByDay(now.getMonthValue(), now.getDayOfWeek().name());
 
                 if (dayScheduleData != null && isScheduled(dayScheduleData)) {
                     canBeActive = true;
@@ -164,10 +161,10 @@ public class BoilerSignaler {
      * @return                  true if the heating is scheduled for the current time in the day provided
      */
     private boolean isScheduled(DayScheduleData dayScheduleData) {
-        Calendar cal = Calendar.getInstance();
-        String hour = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
+        LocalDateTime now = LocalDateTime.now();
+        String hour = String.valueOf(now.getHour());
 
-        return dayScheduleData.getHours().get(hour).getQuarters().get(getCurrentQuarter(cal.get(Calendar.MINUTE))).getEnabled();
+        return dayScheduleData.getHours().get(hour).getQuarters().get(getCurrentQuarter(now.getMinute())).getEnabled();
     }
 
     /**

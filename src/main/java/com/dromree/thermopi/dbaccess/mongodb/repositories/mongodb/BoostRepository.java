@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoostRepository extends MongoRepository<Boost, String> {
 
-    public Boost findTopByOrderByTimestampDesc();
+    Boost findTopByOrderByTimestampDesc();
 
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface HeatingScheduleRepository extends MongoRepository<WeekSchedule, String> {
 
     @Cacheable("schedule")
-    public WeekSchedule findWeekScheduleByMonth(Integer month);
+    WeekSchedule findWeekScheduleByMonth(Integer month);
 
     @Override
     @CachePut("schedule")

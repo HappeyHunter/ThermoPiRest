@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TemperatureRecordRepository extends MongoRepository<TemperatureRecord, String> {
 
-    public TemperatureRecord findTemperatureRecordByYearAndMonthAndDay(Integer year, Integer month, Integer day);
+    TemperatureRecord findTemperatureRecordByYearAndMonthAndDay(Integer year, Integer month, Integer day);
 
     @Query(fields = "{ 'lastReading' : 1 }")
-    public TemperatureRecord findFirstByYearAndMonthAndDay(Integer year, Integer month, Integer day);
+    TemperatureRecord findFirstByYearAndMonthAndDay(Integer year, Integer month, Integer day);
 }

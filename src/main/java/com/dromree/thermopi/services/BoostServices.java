@@ -6,8 +6,7 @@ import com.dromree.thermopi.rest.data.BoostData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Services for Boost
@@ -50,13 +49,10 @@ public class BoostServices {
     public BoostData setBoostSetting(BoostData boostData) {
         if (boostData.getEnabled()) {
             // Trying to enable boost, add an end time
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.HOUR_OF_DAY, 1);
-            Date endTime = cal.getTime();
-            boostData.setEndDate(endTime);
+            boostData.setEndDate(LocalDateTime.now().plusHours(1));
         }
 
-        Boost newBoost = new Boost(boostData.getEnabled(), boostData.getEndDate(), new Date());
+        Boost newBoost = new Boost(boostData.getEnabled(), boostData.getEndDate(), LocalDateTime.now());
 
         boostRepository.save(newBoost);
 

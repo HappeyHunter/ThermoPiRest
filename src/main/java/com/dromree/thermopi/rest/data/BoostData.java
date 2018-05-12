@@ -3,7 +3,7 @@ package com.dromree.thermopi.rest.data;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Network side data object for Boost
@@ -13,11 +13,11 @@ public class BoostData {
 
     private Boolean enabled;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss:z")
-    private Date endDate;
+    private LocalDateTime endDate;
 
     public BoostData() {}
 
-    public BoostData(Boolean enabled, Date endDate) {
+    public BoostData(Boolean enabled, LocalDateTime endDate) {
         this.enabled = enabled;
         this.endDate = endDate;
     }
@@ -30,11 +30,11 @@ public class BoostData {
         this.enabled = enabled;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 }

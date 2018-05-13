@@ -65,7 +65,7 @@ public class CurrentStatusController extends BaseController {
 
         currentStatus.setHeatingEnabled(heatingStatusData.getEnabled());
 
-        if(boostData.getEnabled() && LocalDateTime.now().isBefore(boostData.getEndDate())) {
+        if(boostData.getEnabled() && LocalDateTime.now().isBefore(boostData.getEndDate().toLocalDateTime())) {
             currentStatus.setBoostEnabled(Boolean.TRUE);
         } else {
             currentStatus.setBoostEnabled(Boolean.FALSE);

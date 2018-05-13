@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * Services for Boost
@@ -33,7 +35,8 @@ public class BoostServices {
 
         if(boostData != null) {
             // Populate
-            returnData = new BoostData(boostData.getEnabled(), boostData.getEndDate());
+            ZonedDateTime endDate = boostData.getEndDate() != null ? ZonedDateTime.of(boostData.getEndDate(), ZoneId.systemDefault()): null;
+            returnData = new BoostData(boostData.getEnabled(), endDate);
         }
 
         return returnData;
@@ -49,10 +52,11 @@ public class BoostServices {
     public BoostData setBoostSetting(BoostData boostData) {
         if (boostData.getEnabled()) {
             // Trying to enable boost, add an end time
-            boostData.setEndDate(LocalDateTime.now().plusHours(1));
+            boostData.setEndDate(ZonedDateTime.now().plusHours(1));
         }
 
-        Boost newBoost = new Boost(boostData.getEnabled(), boostData.getEndDate(), LocalDateTime.now());
+        LocalDateTime endDate = boostData.getEndDate() != null ? boostData.getEndDate().toLocalDateTime() : null;
+        Boost newBoost = new Boost(boostData.getEnabled(), endDate, LocalDateTime.now());
 
         boostRepository.save(newBoost);
 

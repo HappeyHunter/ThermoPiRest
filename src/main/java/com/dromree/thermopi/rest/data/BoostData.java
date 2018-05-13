@@ -2,7 +2,7 @@ package com.dromree.thermopi.rest.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 /**
  * Network side data object for Boost
@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 public class BoostData {
 
     private Boolean enabled;
-    private LocalDateTime endDate;
+    private ZonedDateTime endDate;
 
     public BoostData() {}
 
-    public BoostData(Boolean enabled, LocalDateTime endDate) {
+    public BoostData(Boolean enabled, ZonedDateTime endDate) {
         this.enabled = enabled;
         this.endDate = endDate;
     }
@@ -28,11 +28,11 @@ public class BoostData {
         this.enabled = enabled;
     }
 
-    public LocalDateTime getEndDate() {
+    public ZonedDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(ZonedDateTime endDate) {
         this.endDate = endDate;
     }
 }

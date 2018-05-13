@@ -132,7 +132,7 @@ public class BoilerSignaler {
         BoostData currentBoostSetting = boostServices.getLatestBoostSetting();
 
         if (currentBoostSetting != null
-                && currentBoostSetting.getEnabled() && LocalDateTime.now().isBefore(currentBoostSetting.getEndDate())) {
+                && currentBoostSetting.getEnabled() && LocalDateTime.now().isBefore(currentBoostSetting.getEndDate().toLocalDateTime())) {
             canBeActive = true;
         }
 

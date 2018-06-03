@@ -1,14 +1,23 @@
 package com.dromree.thermopi.rest.data;
 
+import com.dromree.thermopi.rest.validation.HolidayDate;
+
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
  * Network side data object for Holiday
  */
+@HolidayDate
 public class HolidayData {
 
     private String holidayID;
+    @NotNull(message = "Start Date is required")
+    @FutureOrPresent(message = "Start date must be today or in the future")
     private LocalDate startDate;
+    @NotNull(message = "End Date is required")
+    @FutureOrPresent(message = "End date must be today or in the future")
     private LocalDate endDate;
 
     public HolidayData() {}

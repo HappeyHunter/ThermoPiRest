@@ -20,4 +20,8 @@ public abstract class BaseController {
     ResponseEntity<?> notFound() {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    ResponseEntity<?> noContent() {
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

@@ -4,11 +4,11 @@ import com.dromree.thermopi.rest.data.HolidayData;
 import com.dromree.thermopi.services.HolidayServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +23,6 @@ public class HolidayController extends BaseController {
 
     private final HolidayServices holidayServices;
 
-    @Autowired
     public HolidayController(HolidayServices holidayServices) {
         this.holidayServices = holidayServices;
     }
@@ -38,13 +37,11 @@ public class HolidayController extends BaseController {
             value = "/{holidayID}",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> putHoliday(@PathVariable("holidayID") String holidayID, @RequestBody HolidayData aHolidayData) {
-        long startTime = System.currentTimeMillis();
+    public ResponseEntity<?> putHoliday(@PathVariable("holidayID") String holidayID, @RequestBody @Valid HolidayData aHolidayData) {
         // Set the Id from the path
         aHolidayData.setHolidayID(holidayID);
 
         holidayServices.updateHoliday(aHolidayData);
-        logger.debug("putHoliday: " + (System.currentTimeMillis()-startTime));
 
         return ok();
     }
@@ -60,13 +57,11 @@ public class HolidayController extends BaseController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> getHoliday(@PathVariable("holidayID") String holidayID) {
-        long startTime = System.currentTimeMillis();
         HolidayData holidayData = holidayServices.getHolidayByHolidayId(holidayID);
 
         if(holidayData == null) {
             return notFound();
         }
-        logger.debug("getHoliday: " + (System.currentTimeMillis()-startTime));
 
         return ok(holidayData);
     }
@@ -82,13 +77,11 @@ public class HolidayController extends BaseController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> addHoliday(@RequestBody HolidayData aHolidayData) {
-        long startTime = System.currentTimeMillis();
+    public ResponseEntity<?> addHoliday(@RequestBody @Valid HolidayData aHolidayData) {
         String holidayID = UUID.randomUUID().toString();
         aHolidayData.setHolidayID(holidayID);
 
         holidayServices.addHoliday(aHolidayData);
-        logger.debug("addHoliday: " + (System.currentTimeMillis()-startTime));
 
         return ok(aHolidayData);
     }
@@ -102,9 +95,8 @@ public class HolidayController extends BaseController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> getHolidays() {
-        long startTime = System.currentTimeMillis();
         List<HolidayData> holidayDataList = holidayServices.getCurrentAndFutureHolidays();
-        logger.debug("getHolidays: " + (System.currentTimeMillis()-startTime));
+
         return ok(holidayDataList);
     }
 
@@ -117,9 +109,7 @@ public class HolidayController extends BaseController {
             value = "/{holidayID}"
     )
     public ResponseEntity<?> deleteHoliday(@PathVariable("holidayID") String holidayID) {
-        long startTime = System.currentTimeMillis();
         holidayServices.deleteHolidayByHolidayId(holidayID);
-        logger.debug("deleteHoliday: " + (System.currentTimeMillis()-startTime));
 
         return ok();
     }

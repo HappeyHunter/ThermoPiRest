@@ -5,6 +5,7 @@ import com.dromree.thermopi.services.AuthorisedTokensServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -22,8 +23,7 @@ import java.io.IOException;
 @Component
 public class AuthorisedFilter extends GenericFilterBean {
 
-    private static String AUTHENTICATION_SCHEME = "BEARER ";
-    private static String WWW_AUTHENTICATION_HEADER = AUTHENTICATION_SCHEME + "realm=ThermoPi";
+    private static String WWW_AUTHENTICATION_HEADER = "realm=ThermoPi";
     private static String SECURE_PATH = "SECURE";
     private static String CURRENT_TEMPERATURE = "CURRENTTEMPERATURE";
     private static String UNAUTHORISED_MESSAGE = "No token provided";
@@ -69,14 +69,9 @@ public class AuthorisedFilter extends GenericFilterBean {
      * @return              true if the token is authorised
      */
     private boolean isValidToken(String authHeader) {
-        String[] splitAuth = authHeader.split(" ");
-        AuthorisedTokenData token = null;
+        AuthorisedTokenData token = authorisedTokensServices.getAuthorisedTokenByToken(authHeader);
 
-        if (splitAuth.length == 2) {
-            token = authorisedTokensServices.getAuthorisedTokenByToken(splitAuth[1]);
-        }
-
-        return token != null && token.getToken().equals(splitAuth[1]);
+        return token != null && token.getToken().equals(authHeader);
     }
 
     /**
@@ -86,14 +81,14 @@ public class AuthorisedFilter extends GenericFilterBean {
      * @return              true if the authorisation is of the expected type
      */
     private boolean isValidAuthentication(String authHeader) {
-        return authHeader != null && authHeader.toUpperCase().startsWith(AUTHENTICATION_SCHEME) && authHeader.length() > AUTHENTICATION_SCHEME.length();
+        return !StringUtils.isEmpty(authHeader);
     }
 
     /**
      * Sets the authentication header details and sends the error for an Unauthorized request
      *
-     * @param httpResponse
-     * @throws IOException
+     * @param httpResponse  Response that will be sent back as Unauthorized
+     * @throws IOException  If an exception occurs sending the error back
      */
     private void abortUnauthorised(HttpServletResponse httpResponse) throws IOException {
         httpResponse.setHeader(HttpHeaders.WWW_AUTHENTICATE, WWW_AUTHENTICATION_HEADER);

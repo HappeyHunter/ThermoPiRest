@@ -1,5 +1,10 @@
 package com.dromree.thermopi.rest.data;
 
+import com.dromree.thermopi.rest.validation.Days;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 /**
@@ -8,7 +13,9 @@ import java.util.Map;
 public class WeekScheduleData {
 
     private Integer month;
-    private Map<String, DayScheduleData> days;
+    @NotEmpty(message = "Day schedule is required")
+    @Size(min = 7, max = 7, message = "Schedule must include settings for 7 days")
+    private Map<@Days String, @Valid DayScheduleData> days;
 
     public WeekScheduleData() {}
 

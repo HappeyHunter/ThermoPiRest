@@ -4,11 +4,11 @@ import com.dromree.thermopi.rest.data.AuthorisedTokenData;
 import com.dromree.thermopi.services.AuthorisedTokensServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -22,7 +22,6 @@ public class AuthorisedTokensController extends BaseController {
 
     private final AuthorisedTokensServices authorisedTokensServices;
 
-    @Autowired
     public AuthorisedTokensController(AuthorisedTokensServices authorisedTokensServices) {
         this.authorisedTokensServices = authorisedTokensServices;
     }
@@ -35,10 +34,8 @@ public class AuthorisedTokensController extends BaseController {
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> addAuthorisedToken(@RequestBody AuthorisedTokenData tokenData) {
-        long startTime = System.currentTimeMillis();
+    public ResponseEntity<?> addAuthorisedToken(@RequestBody @Valid AuthorisedTokenData tokenData) {
         authorisedTokensServices.addTokenForUser(tokenData);
-        logger.debug("addAuthorisedToken: " + (System.currentTimeMillis()-startTime));
 
         return ok();
     }
@@ -52,9 +49,7 @@ public class AuthorisedTokensController extends BaseController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> getAuthorisedTokens() {
-        long startTime = System.currentTimeMillis();
         List<AuthorisedTokenData> tokens = authorisedTokensServices.getAllTokens();
-        logger.debug("getAuthorisedTokens: " + (System.currentTimeMillis()-startTime));
 
         return ok(tokens);
     }

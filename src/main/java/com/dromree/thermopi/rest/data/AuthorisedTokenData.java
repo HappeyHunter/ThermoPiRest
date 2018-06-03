@@ -1,12 +1,16 @@
 package com.dromree.thermopi.rest.data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * Network side data object for Authorised Tokens
  */
 public class AuthorisedTokenData {
 
-    private String token;
+    @NotBlank(message = "User required")
     private String user;
+    @NotBlank(message = "Token required")
+    private String token;
 
     public AuthorisedTokenData() {}
 

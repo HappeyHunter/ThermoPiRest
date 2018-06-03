@@ -4,10 +4,11 @@ import com.dromree.thermopi.rest.data.TargetTemperatureData;
 import com.dromree.thermopi.services.TargetTemperatureService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Rest Controller for Target Temperature
@@ -20,7 +21,6 @@ public class TargetTemperatureController extends BaseController {
 
     private final TargetTemperatureService targetTemperatureService;
 
-    @Autowired
     public TargetTemperatureController(TargetTemperatureService targetTemperatureService) {
         this.targetTemperatureService = targetTemperatureService;
     }
@@ -33,10 +33,8 @@ public class TargetTemperatureController extends BaseController {
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> putTargetTemperature(@RequestBody TargetTemperatureData targetTemperatureData) {
-        long startTime = System.currentTimeMillis();
+    public ResponseEntity<?> putTargetTemperature(@RequestBody @Valid TargetTemperatureData targetTemperatureData) {
         targetTemperatureService.setTargetTemperature(targetTemperatureData);
-        logger.debug("putTargetTemperature: " + (System.currentTimeMillis()-startTime));
 
         return ok();
     }
@@ -50,9 +48,7 @@ public class TargetTemperatureController extends BaseController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> getTargetTemperature() {
-        long startTime = System.currentTimeMillis();
         TargetTemperatureData targetTemperatureData = targetTemperatureService.getTargetTemperature();
-        logger.debug("getTargetTemperature: " + (System.currentTimeMillis()-startTime));
 
         return ok(targetTemperatureData);
     }

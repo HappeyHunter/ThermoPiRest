@@ -5,8 +5,6 @@ import com.dromree.thermopi.dbaccess.mongodb.repositories.mongodb.HeatingSchedul
 import com.dromree.thermopi.rest.data.DayScheduleData;
 import com.dromree.thermopi.rest.data.WeekScheduleData;
 import com.dromree.thermopi.services.util.ScheduleConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,16 +30,16 @@ public class HeatingScheduleServices {
      *
      * @param weeklyScheduleData    the new value for the week
      */
-    public void updateHeatingScheduleByWeek(WeekScheduleData weeklyScheduleData) {
+    public boolean updateHeatingScheduleByWeek(WeekScheduleData weeklyScheduleData) {
         WeekSchedule weekSchedule = heatingScheduleRepository.findWeekScheduleByMonth(weeklyScheduleData.getMonth());
 
         if(weekSchedule != null) {
             weekSchedule.setDays(scheduleConverter.convertDayNetworkToDBDataMap(weeklyScheduleData.getDays()));
-        } else {
-            weekSchedule = scheduleConverter.convertWeekNetworkToDBData(weeklyScheduleData);
+            heatingScheduleRepository.save(weekSchedule);
+            return true;
         }
 
-        heatingScheduleRepository.save(weekSchedule);
+        return false;
     }
 
     /**
@@ -51,16 +49,18 @@ public class HeatingScheduleServices {
      * @param day             The day to be updated
      * @param dayScheduleData The new value for the day
      */
-    public void updateHeatingScheduleByDay(Integer month, String day, DayScheduleData dayScheduleData) {
+    public boolean updateHeatingScheduleByDay(Integer month, String day, DayScheduleData dayScheduleData) {
         WeekSchedule weekSchedule = heatingScheduleRepository.findWeekScheduleByMonth(month);
 
         if(weekSchedule != null) {
-            if(weekSchedule.getDays() != null) {
+            if(weekSchedule.getDays() != null && weekSchedule.getDays().containsKey(day)) {
                 weekSchedule.getDays().put(day, scheduleConverter.convertDayNetworkToDBData(dayScheduleData));
                 heatingScheduleRepository.save(weekSchedule);
+                return true;
             }
         }
 
+        return false;
     }
 
     /**

@@ -48,6 +48,10 @@ dependencies {
     // Pi
     compile group: 'com.pi4j', name: 'pi4j-core', version: '1.2-SNAPSHOT'
 
+    // Java Validation
+    compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+    compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.0.10.Final'
+
     // Test Stuff
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'

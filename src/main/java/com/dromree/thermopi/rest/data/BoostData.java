@@ -2,6 +2,7 @@ package com.dromree.thermopi.rest.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 /**
@@ -10,6 +11,7 @@ import java.time.ZonedDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BoostData {
 
+    @NotNull(message = "New boost state required for update")
     private Boolean enabled;
     private ZonedDateTime endDate;
 

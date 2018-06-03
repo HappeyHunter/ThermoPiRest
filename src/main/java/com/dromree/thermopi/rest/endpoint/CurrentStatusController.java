@@ -7,7 +7,6 @@ import com.dromree.thermopi.services.TargetTemperatureService;
 import com.dromree.thermopi.services.TemperatureRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +32,6 @@ public class CurrentStatusController extends BaseController {
 
     private final TargetTemperatureService targetTemperatureService;
 
-    @Autowired
     public CurrentStatusController(HeatingStatusServices heatingStatusServices, BoostServices boostServices, TemperatureRecordService temperatureRecordService, TargetTemperatureService targetTemperatureService) {
         this.heatingStatusServices = heatingStatusServices;
         this.boostServices = boostServices;
@@ -50,7 +48,6 @@ public class CurrentStatusController extends BaseController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> getStatus() {
-        long startTime = System.currentTimeMillis();
         CurrentStatusData currentStatus = new CurrentStatusData();
 
         HeatingStatusData heatingStatusData = heatingStatusServices.getLatestHeatingStatus();
@@ -73,7 +70,6 @@ public class CurrentStatusController extends BaseController {
 
         currentStatus.setCurrentTemperature(temperatureRecordData.getTemperature());
         currentStatus.setTargetTemperature(targetTemperatureData.getTemperature());
-        logger.debug("getStatus: " + (System.currentTimeMillis()-startTime));
 
         return ok(currentStatus);
     }

@@ -12,7 +12,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 group 'com.dromree.thermopi'
-version '1.1-SNAPSHOT'
+version '1.2-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -37,7 +37,6 @@ dependencies {
 
     // MongoDB
     compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '2.0.7.RELEASE'
-    compile group: 'org.springframework.data', name: 'spring-data-mongodb-parent', version: '2.0.7.RELEASE', ext: 'pom'
     compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.8.0-beta2'
 
     // Spring starters
